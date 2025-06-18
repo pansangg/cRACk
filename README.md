@@ -36,7 +36,7 @@ pip install pyinstaller
 ```
 python -m PyInstaller --onefile main.py
 ```
-5) done
+5) done. check /dist folder
 
 ## TODO
 - [x] fix ctrl+c exit
