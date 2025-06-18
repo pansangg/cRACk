@@ -1,9 +1,9 @@
 # cRACk v1.0
-cRACk is TUI client for RAC[^1], written on Python.
+cRACk is TUI client for [RAC](https://github.com/The-Stratosphere-Solutions/RAC-Hub), written on Python.
 
 
 ## features
-- supports RAC v1.99.2[^2] (RAC v2[^3] and WRAC v2[^4] soon)
+- supports [RAC v1.99.2](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/RACv1.99.md) ([RAC v2](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/RACv2.md) and [WRAC v2](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/WRAC.md) support soon)
 - shitcoded with love!
 
 ## how to run
@@ -23,8 +23,8 @@ run `main.py` with python interpreter.
 - [ ] add user-agents support
 - [ ] add first-time config
 - [ ] add MOTDs
-- [ ] add support for RAC v2[^3]
-- [ ] add support for WRAC v2[^4]
+- [ ] add support for [RAC v2](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/RACv2.md)
+- [ ] add support for [WRAC v2](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/WRAC.md)
 - [ ] fix "lower than before 0x00 result" bug
 - [ ] add ANSI filter
 
@@ -35,7 +35,7 @@ this project is licensed under GPL-3.0 license.
 - [RAC-Hub](https://github.com/The-Stratosphere-Solutions/RAC-Hub)
 - [about RAC (v1.99)](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/RACv1.99.md)
 - [about RAC (v2)](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/RACv2.md)
-- [about WRAC (v2)](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/RACv2.md)
+- [about WRAC (v2)](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/WRAC.md)
 - [bRAC - better RAC client](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/RACv2.md)
 - [Mefedroniy - TUI RAC client](https://github.com/OctoBanon-Main/mefedroniy-client)
 
