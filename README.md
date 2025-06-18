@@ -45,7 +45,7 @@ python -m PyInstaller --onefile main.py
 Choosing nickname and host\
 ![ASCII art, choosing a nickname and host](img/hello.png)\
 Chatting with others\
-![Chatting with other people, user-agents](img/chat.png)\
+![Chatting with other people, user-agents](img/chat.png)
 
 ## TODO
 - [x] fix ctrl+c exit
