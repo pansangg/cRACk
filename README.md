@@ -20,11 +20,11 @@ run `main.py` with python interpreter.
 > note: not tested yet
 
 ## building from source
-1) install python from their website 
+1) install python
 
 https://www.python.org/downloads
 
-2) download this repo or clone using git
+2) download clone this repo using git
 ```
 git clone https://github.com/pansangg/cRACk.git
 ```
@@ -37,6 +37,7 @@ pip install pyinstaller
 python -m PyInstaller --onefile main.py
 ```
 5) done
+
 ## TODO
 - [x] fix ctrl+c exit
 - [ ] add user-agents support
