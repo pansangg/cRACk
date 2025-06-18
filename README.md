@@ -14,7 +14,7 @@ or run `main.py` with python interpreter.
 ### for Linux
 run `main.py` with python interpreter.
 
-### for MacOS (OS X)
+### for MacOS
 run `main.py` with python interpreter.
 > note: not tested yet
 
