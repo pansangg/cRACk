@@ -1,11 +1,20 @@
-import socket,threading,os
+import socket,threading,os,random,re
 
 # official rac servak 91.192.22.20:42666
 
 last_size = 0
 
+NICKNAME = ""
 IP = ""
 PORT = 0
+
+def useragentize(text):
+    text = re.sub("\uB9AC\u3E70<(.*?)> (.*)", r"\033[32m<\1> \2\033[0m", text) # bRAC
+    text = re.sub("\u2550\u2550\u2550<(.*?)> (.*)", r"\033[91m<\1> \2\033[0m", text) # CRAB
+    text = re.sub("\u00B0\u0298<(.*?)> (.*)", r"\033[95m<\1> \2\033[0m", text) # Mefidroniy
+    text = re.sub("\u2042<(.*?)> (.*)", r"\033[1;33m<\1> \2\033[0m", text) # cRACk
+    # text = re.sub("<(.*?)> (.*)", r"\033[46m<\1> \2\033[0m", text) // no clRAC support sorry =[
+    return text
 
 def sendmsg(text):
     global IP,PORT,last_size
@@ -37,37 +46,44 @@ def chunked_reading():
                     break
                 new_data += part
 
-            print(new_data.decode("utf-8", errors="ignore"))
+            new_data = new_data.decode("utf-8", errors="replace")
+            print(useragentize(new_data))
 
 def listen_client():
     while True:
         try:
             newmsg = input("")
-            if (newmsg != ""): sendmsg(newmsg)
+            if (newmsg != ""): sendmsg(f"⁂<{NICKNAME}> {newmsg}")
+            else: print("[cRACk] message is empty :/")
         except Exception:
             print(f"[cRACk] exception said goodbye")
             os._exit(1)
             break
 
 def hello():
-    global IP,PORT
+    global IP,PORT,NICKNAME
 
     print('''
-       `7MM"""Mq.        db       .g8"""bgd `7MM
-         MM   `MM.      ;MM:    .dP'     `M   MM
- ,p6"bo  MM   ,M9      ,V^MM.   dM'       `   MM  ,MP'
-6M'  OO  MMmmdM9      ,M  `MM   MM            MM ;Y
-8M       MM  YM.      AbmmmqMA  MM.           MM;Mm
-YM.    , MM   `Mb.   A'     VML `Mb.     ,'   MM `Mb.
- YMbmd'.JMML. .JMM..AMA.   .AMMA. `"bmmmd'  .JMML. YA
-------------------------------------------------------
-               client for RAC kettles
+\033[1;33m        `7MM"""Mq.        db       .g8"""bgd `7MM
+          MM   `MM.      ;MM:    .dP'     `M   MM
+  ,p6"bo  MM   ,M9      ,V^MM.   dM'       `   MM  ,MP'
+ 6M'  OO  MMmmdM9      ,M  `MM   MM            MM ;Y
+ 8M       MM  YM.      AbmmmqMA  MM.           MM;Mm
+ YM.    , MM   `Mb.   A'     VML `Mb.     ,'   MM `Mb.
+  YMbmd'.JMML. .JMM..AMA.   .AMMA. `"bmmmd'  .JMML. YA
+\033[1;37m ------------------------------------------------------
+                \033[1;33mc\033[0mlient for \033[1;33mRAC\033[0m \033[1;33mk\033[0mettles
 
-        version 1.0 | contributors: pansangg
- https://the-stratosphere-solutions.github.io/RAC-Hub
+              version \033[1;33m1.05\033[0m | by \033[1;33mpansangg\033[0m
+           https://github.com/pansangg/cRACk
 ''')
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+    NICKNAMEINPUT = input("nickname (empty for random): ")
+    if (NICKNAMEINPUT == ""):
+        NICKNAME = str(random.randint(1000, 9999))+"@cRACk"
+    else:
+        NICKNAME = NICKNAMEINPUT
     IPPORTNOTSPLITTED = input("ip:port (empty for default): ")
     if (IPPORTNOTSPLITTED == ""):
         IP = "91.192.22.20"
@@ -86,7 +102,6 @@ YM.    , MM   `Mb.   A'     VML `Mb.     ,'   MM `Mb.
     data_size = sock.recv(1024)
     global last_size
     last_size = int(data_size.split(b'\x00', 1)[0].decode())
-    print("data_size в первый раз: "+str(last_size))
 
     print("[cRACk] asking for messages...")
     sock.send(b'\x01')
@@ -100,7 +115,7 @@ YM.    , MM   `Mb.   A'     VML `Mb.     ,'   MM `Mb.
 
     print("[cRACk] we'll meet again")
     dfull = full.decode("utf-8", errors="ignore")
-    print(dfull)
+    print(useragentize(dfull))
     threading.Thread(target=listen_client).start()
     threading.Thread(target=chunked_reading).start()
 
