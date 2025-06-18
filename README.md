@@ -1,2 +1,2 @@
 # cRACk
-customizable RAC klient
+client for RAC kettles
