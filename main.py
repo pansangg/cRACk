@@ -1,12 +1,23 @@
-import socket,threading,os,random,re
+import socket,threading,os,random,re,sys,subprocess,requests
+from time import sleep
 
 # official rac servak 91.192.22.20:42666
+VERSION = "1.075"
 
 last_size = 0
 
 NICKNAME = ""
 IP = ""
 PORT = 0
+
+def check_update():
+    r = requests.get("https://api.github.com/repos/pansangg/cRACk/releases/latest").json()
+    if r["tag_name"].lstrip('v') > VERSION:
+        print(f"\033[92m[cRACk] update {r["tag_name"]} available! https://github.com/pansangg/cRACk/releases/latest\033[0m")
+    else:
+        print(f"\033[92m[cRACk] you're using latest version of cRACk.\033[0m")
+
+def restart(): subprocess.Popen([sys.executable] + sys.argv)
 
 def useragentize(text):
     text = re.sub("\uB9AC\u3E70<(.*?)> (.*)", r"\033[32m<\1> \2\033[0m", text) # bRAC
@@ -48,6 +59,7 @@ def chunked_reading():
 
             new_data = new_data.decode("utf-8", errors="replace")
             print(useragentize(new_data))
+        sleep(2)
 
 def listen_client():
     while True:
@@ -74,9 +86,11 @@ def hello():
 \033[1;37m ------------------------------------------------------
                 \033[1;33mc\033[0mlient for \033[1;33mRAC\033[0m \033[1;33mk\033[0mettles
 
-              version \033[1;33m1.05\033[0m | by \033[1;33mpansangg\033[0m
-           https://github.com/pansangg/cRACk
+             version \033[1;33m1.075\033[0m | by \033[1;33mpansangg\033[0m
+          https://github.com/pansangg/cRACk
 ''')
+    check_update()
+
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     NICKNAMEINPUT = input("nickname (empty for random): ")
@@ -84,7 +98,11 @@ def hello():
         NICKNAME = str(random.randint(1000, 9999))+"@cRACk"
     else:
         NICKNAME = NICKNAMEINPUT
-    IPPORTNOTSPLITTED = input("ip:port (empty for default): ")
+
+    while True:
+        IPPORTNOTSPLITTED = input("ip:port (empty for default): ")
+        if ":" in IPPORTNOTSPLITTED or IPPORTNOTSPLITTED == "": break
+        print("[cRACk] wrong syntax! please type ip:port")
     if (IPPORTNOTSPLITTED == ""):
         IP = "91.192.22.20"
         PORT = 42666
@@ -94,7 +112,11 @@ def hello():
         PORT = int(PORT)
 
     print("[cRACk] connecting...")
-    sock.connect((IP, PORT))
+    try:
+        sock.connect((IP, PORT))
+    except:
+        print("[cRACk] can't connect to the host!")
+        os._exit(1)
 
     print("[cRACk] 0x00ing...")
     sock.send(b'\x00')
