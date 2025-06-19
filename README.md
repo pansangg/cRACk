@@ -9,7 +9,7 @@ use executable from [latest release](https://github.com/pansangg/cRACk/releases/
 or run `main.py` with python interpreter.
 
 ### for Linux
-use binary from [latest release](https://github.com/pansangg/cRACk/releases/latest),
+use binary from [latest release](https://github.com/pansangg/cRACk/releases/latest),\
 or run `main.py` with python interpreter.
 > note: can be more unstable than Windows version
 
