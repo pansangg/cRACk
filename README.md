@@ -10,11 +10,11 @@ cRACk is TUI client for [RAC](https://github.com/The-Stratosphere-Solutions/RAC-
 
 ## quick start
 ### for Windows
-use executable from [latest release](https://github.com/pansangg/cRACk/releases),\
+use executable from [latest release](https://github.com/pansangg/cRACk/releases/latest),\
 or run `main.py` with python interpreter.
 
 ### for Linux
-use binary from [latest release](https://github.com/pansangg/cRACk/releases),\
+use binary from [latest release](https://github.com/pansangg/cRACk/releases/latest),\
 or run `main.py` with python interpreter.
 
 ### for other OSes
