@@ -1,8 +1,6 @@
-import socket,threading,os,random,re,sys,subprocess,requests
-from math import floor
+import socket,threading,os,random,re,requests,time
 
-# official rac servak 91.192.22.20:42666
-VERSION = "1.99"
+VERSION = "1.99.288"
 MOTDS = [
     "also try bRAC",
     "also try Mefedroniy",
@@ -14,7 +12,7 @@ MOTDS = [
     "idk what to type here",
     "this is motd.",
     "respects user-agents!",
-    "supports rac v1.99.2",
+    "supports rac v1.99a.2",
     "rac v2 support soon",
     "i want to make iRAC",
     "also see README.md",
@@ -26,7 +24,7 @@ MOTDS = [
     "build from source!",
     "licensed with GPL-3.0",
     "WRAC support soon",
-    "next update is 1.99+0.5-½*3.14",
+    "next update is 1.99a+0.5-½*3.14",
     "crack at home:"
 ]
 
@@ -43,7 +41,7 @@ def random_motd(): return random.choice(MOTDS).strip()
 
 def center(text):
     probels = 55-len(text)
-    phalf = floor(probels/2)-1
+    phalf = int(probels/2)-1
     return " "*phalf+'\"'+text+'\"'
 
 def check_update():
@@ -62,14 +60,12 @@ def useragentize(text):
     text = re.sub("\u2550\u2550\u2550<(.*?)> (.*)", r"\033[91m<\1> \2\033[0m", text) # CRAB
     text = re.sub("\u00B0\u0298<(.*?)> (.*)", r"\033[95m<\1> \2\033[0m", text) # Mefidroniy
     text = re.sub("\u2042<(.*?)> (.*)", r"\033[1;33m<\1> \2\033[0m", text) # cRACk
-    # text = re.sub("<(.*?)> (.*)", r"\033[46m<\1> \2\033[0m", text) // no clRAC support sorry =[
     return text
 
 def sendmsg(text):
     global IP,PORT,last_size
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     sock.connect((IP, PORT))
-    # text = re.sub(pattern=r"\{[^}]*\}\s", string=text, repl=" ")
     sock.send(b'\x01'+text.encode("utf-8"))
     sock.close()
 
@@ -141,7 +137,7 @@ def hello():
                 \033[1;33mc\033[0mlient for \033[1;33mRAC\033[0m \033[1;33mk\033[0mettles
 \x1b[3m{center(random_motd())}\x1b[0m
 
-              version \033[1;33m1.99\033[0m | by \033[1;33mpansangg\033[0m
+            version \033[1;33m{VERSION}\033[0m | by \033[1;33mpansangg\033[0m
           https://github.com/pansangg/cRACk
 ''')
     check_update()
@@ -185,7 +181,7 @@ def hello():
     full = b''
     print("[cRACk] receiving messages...")
     while True:
-        part = sock.recv(4096)  # 4096 — размер буфера, можно изменить
+        part = sock.recv(4096)
         if not part:
             break
         full += part
@@ -196,12 +192,7 @@ def hello():
     threading.Thread(target=listen_client).start()
     threading.Thread(target=chunked_reading).start()
 
-# async def msging():
-#     loop = asyncio.get_event_loop()
-#     while True:
-#         msg = input("message: ")
-#         s.send(b'\x01'+msg.encode("utf-8"))
+    while True:
+        time.sleep(1)
 
 hello()
-# with keyboard.Listener(on_press=leave_sharavar) as listener: listener.join()
-threading.Event().wait()
