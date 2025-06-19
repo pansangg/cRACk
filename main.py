@@ -122,7 +122,7 @@ def listen_client():
             newmsg = input("")
             if (newmsg != ""): sendmsg(f"\r⁂<{NICKNAME}> {newmsg}"+" "*50)
         except Exception as e:
-            print(f"[cRACk] unexpected error! exiting...")
+            print(f"[cRACk] exception said to exit, bye!")
             os._exit(1)
             break
 
