@@ -9,13 +9,13 @@ use executable from [latest release](https://github.com/pansangg/cRACk/releases/
 or run `main.py` with python interpreter.
 
 ### for Linux
-use binary from [latest release](https://github.com/pansangg/cRACk/releases/latest),\
+use binary from [latest release](https://github.com/pansangg/cRACk/releases/latest),
 or run `main.py` with python interpreter.
+> note: can be more unstable than Windows version
 
 ### for other OSes
 run `main.py` with python interpreter,\
 or [build it from source](#building-from-source) for yourself
-> note: there is no guarantee that your build will work
 
 ## building from source
 1) install python
@@ -50,7 +50,7 @@ Chatting with others\
 - [x] add MOTDs
 - [ ] add support for [RAC v2](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/RACv2.md) (auth)
 - [ ] add support for [WRAC v2](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/WRAC.md)
-- [x] fix "data_size lower than last_size" crach
+- [x] fix "data_size lower than last_size" crash
 - [x] add ANSI filter
 - [x] add some colors you know
 - [x] add random nickname option
