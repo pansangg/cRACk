@@ -1,5 +1,5 @@
-# cRACk v1.075
-«_<ins>**c**</ins>lient for <ins>**RAC**</ins> <ins>**k**</ins>ettles_» **→** <ins>**cRACk**</ins>
+# cRACk v1.98
+**c**lient for **RAC** **k**ettles
 
 cRACk is TUI client for [RAC](https://github.com/The-Stratosphere-Solutions/RAC-Hub), written on Python.
 
@@ -52,16 +52,16 @@ Chatting with others\
 - [x] add user-agents support
 - [ ] add first-time config
 - [ ] add saving config
-- [ ] add MOTDs
+- [x] add MOTDs
 - [ ] add support for [RAC v2](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/RACv2.md) (auth)
 - [ ] add support for [WRAC v2](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/WRAC.md)
-- [ ] fix "lower than before 0x00 result" bug
-- [ ] add ANSI filter
+- [x] fix "data_size lower than last_size" crach
+- [x] add ANSI filter
 - [x] add some colors you know
 - [x] add random nickname option
-- [ ] how to leave the server??
+- [x] ~~how to leave the server??~~ restart client
 - [x] add screenshots
-- [ ] hide your ip
+- [x] hide your ip
 
 ## license
 this project is licensed under GPL-3.0 license.

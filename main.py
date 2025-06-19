@@ -1,8 +1,8 @@
 import socket,threading,os,random,re,sys,subprocess,requests
-from time import sleep
+from math import floor
 
 # official rac servak 91.192.22.20:42666
-VERSION = "1.075"
+VERSION = "1.98"
 
 last_size = 0
 
@@ -10,14 +10,26 @@ NICKNAME = ""
 IP = ""
 PORT = 0
 
-def check_update():
-    r = requests.get("https://api.github.com/repos/pansangg/cRACk/releases/latest").json()
-    if r["tag_name"].lstrip('v') > VERSION:
-        print(f"\033[92m[cRACk] update {r["tag_name"]} available! https://github.com/pansangg/cRACk/releases/latest\033[0m")
-    else:
-        print(f"\033[92m[cRACk] you're using latest version of cRACk.\033[0m")
+def filter_ansi(text):
+    return re.sub(r'\x1b\[[0-9;?]*[A-DF-HJ-Z]', '', text)
 
-def restart(): subprocess.Popen([sys.executable] + sys.argv)
+def random_motd(): return random.choice(open("motds.txt").readlines()).strip()
+
+def center(text):
+    probels = 55-len(text)
+    phalf = floor(probels/2)-1
+    return " "*phalf+'\"'+text+'\"'
+
+def check_update():
+    print("[cRACk] checking for updates...")
+    try:
+        r = requests.get("https://api.github.com/repos/pansangg/cRACk/releases/latest").json()
+        if r["tag_name"].lstrip('v') > VERSION:
+            print(f"\033[92m[cRACk] update {r["tag_name"]} available! https://github.com/pansangg/cRACk/releases/latest\033[0m")
+        else:
+            print(f"\033[92m[cRACk] you're using latest version of cRACk.\033[0m")
+    except:
+        print("[cRACk] unable to check for updates.")
 
 def useragentize(text):
     text = re.sub("\uB9AC\u3E70<(.*?)> (.*)", r"\033[32m<\1> \2\033[0m", text) # bRAC
@@ -31,6 +43,7 @@ def sendmsg(text):
     global IP,PORT,last_size
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     sock.connect((IP, PORT))
+    # text = re.sub(pattern=r"\{[^}]*\}\s", string=text, repl=" ")
     sock.send(b'\x01'+text.encode("utf-8"))
     sock.close()
 
@@ -58,24 +71,39 @@ def chunked_reading():
                 new_data += part
 
             new_data = new_data.decode("utf-8", errors="replace")
-            print(useragentize(new_data))
-        sleep(2)
+            print(filter_ansi(useragentize(new_data)))
+        elif data_size < last_size:
+            sock.send(b'\x00')
+
+            data_size = sock.recv(1024)
+            last_size = int(data_size.split(b'\x00', 1)[0].decode())
+
+            sock.send(b'\x01')
+            full = b''
+
+            while True:
+                part = sock.recv(4096)
+                if not part:
+                    break
+                full += part
+
+            dfull = full.decode("utf-8", errors="ignore")
+            print(useragentize(dfull))
 
 def listen_client():
     while True:
         try:
             newmsg = input("")
-            if (newmsg != ""): sendmsg(f"⁂<{NICKNAME}> {newmsg}")
-            else: print("[cRACk] message is empty :/")
-        except Exception:
-            print(f"[cRACk] exception said goodbye")
+            if (newmsg != ""): sendmsg(f"\r⁂<{NICKNAME}> {newmsg}"+" "*50)
+        except Exception as e:
+            print(f"[cRACk] unexpected error! exiting...")
             os._exit(1)
             break
 
 def hello():
     global IP,PORT,NICKNAME
 
-    print('''
+    print(f'''
 \033[1;33m        `7MM"""Mq.        db       .g8"""bgd `7MM
           MM   `MM.      ;MM:    .dP'     `M   MM
   ,p6"bo  MM   ,M9      ,V^MM.   dM'       `   MM  ,MP'
@@ -85,8 +113,9 @@ def hello():
   YMbmd'.JMML. .JMM..AMA.   .AMMA. `"bmmmd'  .JMML. YA
 \033[1;37m ------------------------------------------------------
                 \033[1;33mc\033[0mlient for \033[1;33mRAC\033[0m \033[1;33mk\033[0mettles
+\x1b[3m{center(random_motd())}\x1b[0m
 
-             version \033[1;33m1.075\033[0m | by \033[1;33mpansangg\033[0m
+              version \033[1;33m1.98\033[0m | by \033[1;33mpansangg\033[0m
           https://github.com/pansangg/cRACk
 ''')
     check_update()
@@ -137,7 +166,7 @@ def hello():
 
     print("[cRACk] we'll meet again")
     dfull = full.decode("utf-8", errors="ignore")
-    print(useragentize(dfull))
+    print(filter_ansi(useragentize(dfull)))
     threading.Thread(target=listen_client).start()
     threading.Thread(target=chunked_reading).start()
 
@@ -148,4 +177,5 @@ def hello():
 #         s.send(b'\x01'+msg.encode("utf-8"))
 
 hello()
+# with keyboard.Listener(on_press=leave_sharavar) as listener: listener.join()
 threading.Event().wait()
