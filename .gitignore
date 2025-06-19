@@ -1,3 +1,6 @@
 *.spec
+icon.png
+*.ico
+
 /build
 /dist
