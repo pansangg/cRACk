@@ -2,7 +2,33 @@ import socket,threading,os,random,re,sys,subprocess,requests
 from math import floor
 
 # official rac servak 91.192.22.20:42666
-VERSION = "1.98"
+VERSION = "1.99"
+MOTDS = [
+    "also try bRAC",
+    "also try Mefedroniy",
+    "clRAC is bullshit.",
+    "i hate mr.sugoma",
+    "what is rac??",
+    "give me money $_$",
+    "check out RAC-Hub!",
+    "idk what to type here",
+    "this is motd.",
+    "respects user-agents!",
+    "supports rac v1.99.2",
+    "rac v2 support soon",
+    "i want to make iRAC",
+    "also see README.md",
+    "i love luckyserv",
+    "what shto",
+    "made in russia",
+    "made with love",
+    "made not in china",
+    "build from source!",
+    "licensed with GPL-3.0",
+    "WRAC support soon",
+    "next update is 1.99+0.5-½*3.14",
+    "crack at home:"
+]
 
 last_size = 0
 
@@ -13,7 +39,7 @@ PORT = 0
 def filter_ansi(text):
     return re.sub(r'\x1b\[[0-9;?]*[A-DF-HJ-Z]', '', text)
 
-def random_motd(): return random.choice(open("motds.txt").readlines()).strip()
+def random_motd(): return random.choice(MOTDS).strip()
 
 def center(text):
     probels = 55-len(text)
@@ -115,7 +141,7 @@ def hello():
                 \033[1;33mc\033[0mlient for \033[1;33mRAC\033[0m \033[1;33mk\033[0mettles
 \x1b[3m{center(random_motd())}\x1b[0m
 
-              version \033[1;33m1.98\033[0m | by \033[1;33mpansangg\033[0m
+              version \033[1;33m1.99\033[0m | by \033[1;33mpansangg\033[0m
           https://github.com/pansangg/cRACk
 ''')
     check_update()

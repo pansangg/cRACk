@@ -1,4 +1,4 @@
-# cRACk v1.98
+# cRACk v1.99
 **c**lient for **RAC** **k**ettles
 
 cRACk is TUI client for [RAC](https://github.com/The-Stratosphere-Solutions/RAC-Hub), written on Python.
