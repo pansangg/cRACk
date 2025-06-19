@@ -1,6 +1,5 @@
 *.spec
-icon.png
-*.ico
 
 /build
 /dist
+/bloat
