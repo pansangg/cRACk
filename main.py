@@ -1,6 +1,17 @@
 import socket,threading,os,random,re,requests,time,toml,sys,string
 
-with open('config.toml', 'r') as f:
+if not os.path.isfile("config.toml"):
+    with open("config.toml", "w") as f:
+        f.write("""configured = false
+nickname = ""
+auth = false
+password = ""
+default_server = "91.192.22.20:42666"
+cfu = true
+motd = true
+""")
+
+with open("config.toml", 'r') as f:
     c = toml.load(f)
 
 VERSION = "2.0ь"
@@ -260,7 +271,7 @@ def oobe():
             c["cfu"] = check_for_updates
             c["motd"] = motd_enabled
             c["configured"] = True
-            with open('config.toml', 'w') as f:
+            with open("config.toml", 'w') as f:
                 toml.dump(c, f)
 
             input("\n[cRACk] everything is set up! now cRACk needs to restart so that everything goes correctly. open cRACk after it closes! (press enter to continue)")
@@ -386,7 +397,7 @@ def main():
 
 if "--reset" in sys.argv or "-r" in sys.argv:
     c["configured"] = False
-    with open('config.toml', 'w') as f:
+    with open("config.toml", 'w') as f:
         toml.dump(c, f)
 
 if c["configured"]:
