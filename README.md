@@ -1,13 +1,16 @@
-# cRACk v1.99.288
+# cRACk 2.0ь
 **c**lient for **RAC** **k**ettles
 
 cRACk is TUI client for [RAC](https://github.com/The-Stratosphere-Solutions/RAC-Hub) v1.99.2, written on Python.
 
 ## features
-- highly customizable
-- ansi filtering
-- mr.sugoma's shit clearing
-- auto update checking
+- easy configurable
+- IP hiding
+- update checking
+- supports RAC v2.0
+- user friendly
+- supports [user-agents](https://github.com/MeexReay/bRAC/blob/main/docs/user_agents.md)
+- very lightweight
 
 ## quick start
 ### for Windows
@@ -51,10 +54,10 @@ Chatting with others\
 ## TODO
 - [x] fix ctrl+c exit
 - [x] add user-agents support
-- [ ] add first-time config
-- [ ] add saving config
+- [x] add first-time config
+- [x] add saving config
 - [x] add MOTDs
-- [ ] add support for [RAC v2](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/RACv2.md) (auth)
+- [x] add support for [RAC v2](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/RACv2.md) (auth)
 - [ ] add support for [WRAC v2](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/WRAC.md)
 - [x] fix "data_size lower than last_size" crash
 - [x] add ANSI filter
@@ -64,6 +67,7 @@ Chatting with others\
 - [x] add screenshots
 - [x] hide your ip
 - [ ] add faking user-agents
+- [ ] add commands
 
 ## license
 this project is licensed under GPL-3.0 license.
@@ -75,3 +79,4 @@ this project is licensed under GPL-3.0 license.
 - [about WRAC (v2)](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/WRAC.md)
 - [bRAC - better RAC client](https://github.com/MeexReay/bRAC)
 - [Mefedroniy - TUI RAC client](https://github.com/OctoBanon-Main/mefedroniy-client)
+- [RAC user-agents](https://github.com/MeexReay/bRAC/blob/main/docs/user_agents.md)

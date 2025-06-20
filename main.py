@@ -1,10 +1,9 @@
-import socket,threading,os,random,re,requests,time,toml,sys
+import socket,threading,os,random,re,requests,time,toml,sys,string
 
 with open('config.toml', 'r') as f:
     c = toml.load(f)
 
-# VERSION = "2.0ь"
-VERSION = "1.99.288"
+VERSION = "2.0ь"
 MOTDS = [
     "also try bRAC",
     "also try Mefedroniy",
@@ -26,31 +25,26 @@ MOTDS = [
     "made not in china",
     "build from source!",
     "licensed with GPL-3.0",
-    "WRAC support never",
+    "WRAC support maybe",
     "next update is 2.99alpha+0.5-½*3.14",
     "cracking crack is bannable",
-    "crack-unbloated is also good",
-    "homemade nuggets",
     "i know where do you live now.",
     "your ip is 127.0.0.1",
-    "rarest motd real not fake",
-    "no bloatware! (maybe)",
+    "rarest motd (real no fake)",
+    "no bloatware! (i guess)",
     "doesn't respect mr.sugoma",
     "respects Forbirdden",
     "respects MeexReay",
     "made at home",
     "respects OctoBanon",
     "support: +74959528833",
-    "filters ANSI",
-    "checks updates",
     "deleting system...",
-    "best RAC client ever (real)",
+    "best RAC client ever",
     "stealing passwords...",
-    "author is heterogay",
     "shitcoded with love",
     "free robux: pansangg.github.io",
     "thanks camp3rcraft",
-    "shRACk soon",
+    "shRACk soon (i hope)",
     "also try cRACk-unbloated",
     "star the cRACk repository!"
 ]
@@ -61,14 +55,18 @@ ASCIIART = '''
  6M'  OO  MMmmdM9      ,M  `MM   MM            MM ;Y
  8M       MM  YM.      AbmmmqMA  MM.           MM;Mm
  YM.    , MM   `Mb.   A'     VML `Mb.     ,'   MM `Mb.
-  YMbmd'.JMML. .JMM..AMA.   .AMMA. `"bmmmd'  .JMML. YA\033[1;37m
-'''
+  YMbmd'.JMML. .JMM..AMA.   .AMMA. `"bmmmd'  .JMML. YA\033[1;37m'''
 
 last_size = 0
 
 NICKNAME = ""
+PASSWORD = ""
 IP = ""
 PORT = 0
+
+def rnp(): # stands for Random Nick Part
+    chars = string.digits + string.ascii_letters
+    return ''.join(random.choice(chars) for _ in range(5))
 
 def filter_ansi(text):
     return re.sub(r'\x1b\[[0-9;?]*[A-DF-HJ-Z]', '', text)
@@ -106,7 +104,14 @@ def sendmsg(text):
     global IP,PORT,last_size
     sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
     sock.connect((IP, PORT))
-    sock.send(b'\x01'+text.encode("utf-8"))
+    if (c["auth"]):
+        sock.send(b'\x01'+f"{NICKNAME}\n{PASSWORD}\n{text}".encode('utf-8'))
+        sockres = sock.recv(1024)
+        if (sockres == b'\x01'):
+            print("[cRACk] something went wrong. please restart the client.")
+        elif (sockres == b'\x02'):
+            print("[cRACk] looks like your password from config is incorrect. to make everything work properly, please start cRACk with --reset or -r argument, and change your auth credentials.")
+    else: sock.send(b'\x01'+text.encode("utf-8"))
     sock.close()
 
 def chunked_reading():
@@ -159,7 +164,7 @@ def listen_client():
             if (newmsg != ""): sendmsg(f"\r⁂<{NICKNAME}> {newmsg}"+" "*50)
         except Exception as e:
             print(f"[cRACk] exception said to exit, bye!")
-            os._exit(1)
+            os._exit(-1)
             break
 
 def oobe():
@@ -167,17 +172,17 @@ def oobe():
     print(f'''
  {ASCIIART}
  ------------------------------------------------------
-             version \033[1;33m{VERSION}\033[0m | by \033[1;33mpansangg\033[0m
+              version \033[1;33m{VERSION}\033[0m | by \033[1;33mpansangg\033[0m
           https://github.com/pansangg/cRACk
 
 ''')
     print("[cRACk] hello! looks like its your \033[1;33mfirst time using cRACk\033[0m. lets configure it for you!")
-    print("[cRACk] note: if you want to \033[1;33mchange something\033[0m, start \033[1;33mcRACk with --reset or -r argument\033[0m.\n")
+    print("[cRACk] note: if you want to \033[1;33mreset config\033[0m, start \033[1;33mcRACk with --reset or -r argument\033[0m.\n")
 
     password = ""
 
     while True:
-        nickname = input("[cRACk] choose your nickname (leave empty for manual entry): ")
+        nickname = input("choose your nickname (leave empty for manual entry): ")
         if nickname == "":
             print("[cRACk] great! you are entering nickname \033[1;33mmanually\033[0m from now.")
             break
@@ -186,7 +191,7 @@ def oobe():
             break
         print("[cRACk] nickname can't be only whitespaces")
     while True:
-        auth = input("[cRACk] enable auth? (y/n, default:n): ")
+        auth = input("\nenable auth? (y/n, default:n): ")
         if auth.lower() == "y":
             print(f"[cRACk] great! auth is \033[1;33menabled\033[0m now.")
             auth = True
@@ -198,14 +203,13 @@ def oobe():
         print("[cRACk] choose y or n")
     if auth and nickname != "" and not nickname.isspace():
         while True:
-            password = input("[cRACk] choose a password (leave empty for manual entry): ")
-            if password == "":
-                print("[cRACk] great! you're entering password \033[1;33mmanually\033[0m from now.")
+            password = input("\nchoose a password: ")
+            if password != "" and not password.isspace():
+                print(f"[cRACk] great! your password is \033[1;33m{password}\033[0m now.")
                 break
-            print(f"[cRACk] great! your password is \033[1;33m{password}\033[0m now.")
-            break
+            print("[cRACk] password can't be empty")
     while True:
-        check_for_updates = input("[cRACk] check for updates? (y/n, default:y): ")
+        check_for_updates = input("\ncheck for updates? (y/n, default:y): ")
         if check_for_updates.lower() == "y" or check_for_updates == "":
             print(f"[cRACk] great! update checking is \033[1;33menabled\033[0m now.")
             check_for_updates = True
@@ -216,7 +220,7 @@ def oobe():
             break
         print("[cRACk] choose y or n")
     while True:
-        default_server = input("[cRACk] choose default server ip:port (leave empty for mr.sugoma's): ")
+        default_server = input("\nchoose default server ip:port (leave empty for mr.sugoma's): ")
         if default_server == "":
             print("[cRACk] great! default server is \033[1;33m91.192.22.20:42666\033[0m now.")
             default_server = "91.192.22.20:42666"
@@ -226,7 +230,7 @@ def oobe():
             break
         print("[cRACk] invalid server!")
     while True:
-        motd_enabled = input("[cRACk] enable MOTD? (y/n, default:y): ")
+        motd_enabled = input("\nenable MOTD? (y/n, default:y): ")
         if motd_enabled.lower() == "y" or motd_enabled == "":
             print("[cRACk] great! MOTD is \033[1;33menabled\033[0m now.")
             motd_enabled = True
@@ -245,44 +249,33 @@ def oobe():
     print(f"MOTD: \033[1;33m{"enabled" if motd_enabled else "disabled"}\033[0m\n")
 
     while True:
-        config_confirm = input("\n[cRACk] is everything perfect? (y/n): ")
+        config_confirm = input("\nis it perfect? (y/n): ")
         if config_confirm.lower() == "y":
             print("[cRACk] saving config...")
-            # save config logic
+            c["nickname"] = nickname
+            c["auth"] = auth
+            c["password"] = password
+            c["default_server"] = default_server
+            c["cfu"] = check_for_updates
+            c["motd"] = motd_enabled
+            c["configured"] = True
+            with open('config.toml', 'w') as f:
+                toml.dump(c, f)
 
-            input("[cRACk] everything is set up! now cRACk needs to restart so that everything goes correctly. open cRACk after it closes! (press enter to continue)")
-            print("[cRACk] 5...")
-            time.sleep(1)
-            print("[cRACk] 4...")
-            time.sleep(1)
-            print("[cRACk] 3...")
-            time.sleep(1)
-            print("[cRACk] 2...")
-            time.sleep(1)
-            print("[cRACk] 1...")
+            input("\n[cRACk] everything is set up! now cRACk needs to restart so that everything goes correctly. open cRACk after it closes! (press enter to continue)")
             time.sleep(1)
             print("[cRACk] exiting...")
+            time.sleep(1)
+            os._exit(1)
             break
         elif config_confirm.lower() == "n":
             while True:
-                reconfig_confirm = input("\n[cRACk] do you want to set up everything again? (y/n): ")
+                reconfig_confirm = input("\ndo you want to reset your config? (y/n): ")
                 if reconfig_confirm.lower() == "y":
                     print("[cRACk] restarting oobe...")
-                    with open('config.toml', 'w') as f:
-                        toml.dump(c, f)
-                    input("[cRACk] everything is set up! now cRACk needs to restart so that everything goes correctly. open cRACk after it closes! (press enter to continue)")
-                    print("[cRACk] 5...")
                     time.sleep(1)
-                    print("[cRACk] 4...")
-                    time.sleep(1)
-                    print("[cRACk] 3...")
-                    time.sleep(1)
-                    print("[cRACk] 2...")
-                    time.sleep(1)
-                    print("[cRACk] 1...")
-                    time.sleep(1)
-                    print("[cRACk] exiting...")
-                    sys._exit(1)
+                    print('\n'*100)
+                    oobe()
                     break
                 elif reconfig_confirm.lower() == "n":
                     break
@@ -290,54 +283,87 @@ def oobe():
 
 
 def main():
-    global IP,PORT,NICKNAME
+    global IP,PORT,NICKNAME,PASSWORD
     print("\n"*100)
     print(f'''
  {ASCIIART}
  ------------------------------------------------------
                 \033[1;33mc\033[0mlient for \033[1;33mRAC\033[0m \033[1;33mk\033[0mettles
-\x1b[3m{center(random_motd())}\x1b[0m
-
-            version \033[1;33m{VERSION}\033[0m | by \033[1;33mpansangg\033[0m
+{f"\x1b[3m{center(random_motd())}\x1b[0m\n" if c["motd"] else ""}
+              version \033[1;33m{VERSION}\033[0m | by \033[1;33mpansangg\033[0m
           https://github.com/pansangg/cRACk
 ''')
-    check_update()
+    if c["cfu"]: check_update()
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    NICKNAMEINPUT = input("nickname (empty for random): ")
-    if (NICKNAMEINPUT == ""):
-        NICKNAME = str(random.randint(1000, 9999))+"@cRACk"
-    else:
-        NICKNAME = NICKNAMEINPUT
+    if (c["nickname"] == ""):
+        while True:
+            NICKNAMEINPUT = input("nickname (empty for random): ")
+            if (NICKNAMEINPUT == ""):
+                NICKNAME = rnp()+"@cRACk"
+                break
+            elif (not NICKNAMEINPUT.isspace()):
+                NICKNAME = NICKNAMEINPUT
+                break
+            print("[cRACk] nickname can't be only whitespaces")
+    else: NICKNAME = c["nickname"]
+
+
+    if (c["auth"] and c["password"] == ""):
+        while True:
+            PWDINPUT = input("password: ")
+            if (PWDINPUT != ""):
+                PASSWORD = PWDINPUT
+                break
+            print("[cRACk] password can't be empty")
 
     while True:
         IPPORTNOTSPLITTED = input("ip:port (empty for default): ")
-        if ":" in IPPORTNOTSPLITTED or IPPORTNOTSPLITTED == "": break
+        if valid_host(IPPORTNOTSPLITTED) or IPPORTNOTSPLITTED == "": break
         print("[cRACk] wrong syntax! please type ip:port")
     if (IPPORTNOTSPLITTED == ""):
-        IP = "91.192.22.20"
-        PORT = 42666
-        print("[cRACk] default is 91.192.22.20:42666")
+        IP,PORT = c["default_server"].split(":", 1)
+        PORT = int(PORT)
+        print(f"[cRACk] default is {c["default_server"]}")
     else:
         IP,PORT = IPPORTNOTSPLITTED.split(":", 1)
         PORT = int(PORT)
+
+    if (c["auth"]):
+        print("[cRACk] authenticating...")
+        authsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            authsock.connect((IP, PORT))
+        except:
+            print("[cRACk] can't connect to the host!")
+            os._exit(-1)
+
+        authsock.send(b'\x03'+f"{NICKNAME}\n{PASSWORD}".encode('utf-8'))
+        authres = authsock.recv(1024)
+        if authres == b'\x01':
+            print("[cRACk] auth success! (logged in)")
+        elif authres == b'':
+            print("[cRACk] auth success! (registered)")
+        else:
+            print("[cRACk] something went wrong.")
+            os._exit(-1)
+        authsock.close()
+        time.sleep(1)
 
     print("[cRACk] connecting...")
     try:
         sock.connect((IP, PORT))
     except:
         print("[cRACk] can't connect to the host!")
-        os._exit(1)
+        os._exit(-1)
 
-    print("[cRACk] 0x00ing...")
+    print("[cRACk] asking messages...")
     sock.send(b'\x00')
-
     data_size = sock.recv(1024)
     global last_size
     last_size = int(data_size.split(b'\x00', 1)[0].decode())
 
-    print("[cRACk] asking for messages...")
     sock.send(b'\x01')
     full = b''
     print("[cRACk] receiving messages...")
@@ -347,9 +373,10 @@ def main():
             break
         full += part
 
-    print("[cRACk] we'll meet again")
+    print("[cRACk] we'll meet again.")
     dfull = full.decode("utf-8", errors="ignore")
     print(filter_ansi(useragentize(dfull)))
+
     threading.Thread(target=listen_client).start()
     threading.Thread(target=chunked_reading).start()
 
@@ -361,7 +388,7 @@ if "--reset" in sys.argv or "-r" in sys.argv:
     with open('config.toml', 'w') as f:
         toml.dump(c, f)
 
-# if c["configured"]:
+if c["configured"]:
     main()
-# else:
-#     oobe()
+else:
+    oobe()
