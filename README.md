@@ -1,7 +1,13 @@
-# cRACk v1.99.228
+# cRACk v1.99.288
 **c**lient for **RAC** **k**ettles
 
 cRACk is TUI client for [RAC](https://github.com/The-Stratosphere-Solutions/RAC-Hub) v1.99.2, written on Python.
+
+## features
+- highly customizable
+- ansi filtering
+- mr.sugoma's shit clearing
+- auto update checking
 
 ## quick start
 ### for Windows
@@ -57,6 +63,7 @@ Chatting with others\
 - [x] ~~how to leave the server??~~ restart client
 - [x] add screenshots
 - [x] hide your ip
+- [ ] add faking user-agents
 
 ## license
 this project is licensed under GPL-3.0 license.
