@@ -46,7 +46,8 @@ MOTDS = [
     "thanks camp3rcraft",
     "shRACk soon (i hope)",
     "also try cRACk-unbloated",
-    "star the cRACk repository!"
+    "star the cRACk repository!",
+    "made by human!"
 ]
 ASCIIART = '''
 \033[1;33m        `7MM"""Mq.        db       .g8"""bgd `7MM
