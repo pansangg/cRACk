@@ -50,16 +50,18 @@ MOTDS = [
     "shitcoded with love",
     "free robux: pansangg.github.io",
     "thanks camp3rcraft",
-    "shRACk soon"
+    "shRACk soon",
+    "also try cRACk-unbloated",
+    "star the cRACk repository!"
 ]
 ASCIIART = '''
-\033[1;33m       `7MM"""Mq.        db       .g8"""bgd `7MM
-         MM   `MM.      ;MM:    .dP'     `M   MM
- ,p6"bo  MM   ,M9      ,V^MM.   dM'       `   MM  ,MP'
-6M'  OO  MMmmdM9      ,M  `MM   MM            MM ;Y
-8M       MM  YM.      AbmmmqMA  MM.           MM;Mm
-YM.    , MM   `Mb.   A'     VML `Mb.     ,'   MM `Mb.
- YMbmd'.JMML. .JMM..AMA.   .AMMA. `"bmmmd'  .JMML. YA\033[1;37m
+\033[1;33m        `7MM"""Mq.        db       .g8"""bgd `7MM
+          MM   `MM.      ;MM:    .dP'     `M   MM
+  ,p6"bo  MM   ,M9      ,V^MM.   dM'       `   MM  ,MP'
+ 6M'  OO  MMmmdM9      ,M  `MM   MM            MM ;Y
+ 8M       MM  YM.      AbmmmqMA  MM.           MM;Mm
+ YM.    , MM   `Mb.   A'     VML `Mb.     ,'   MM `Mb.
+  YMbmd'.JMML. .JMM..AMA.   .AMMA. `"bmmmd'  .JMML. YA\033[1;37m
 '''
 
 last_size = 0
@@ -193,7 +195,7 @@ def oobe():
             print("[cRACk] great! auth is \033[1;33mdisabled\033[0m.")
             auth = False
             break
-        print("[cRACk] wrong syntax! use y or n")
+        print("[cRACk] choose y or n")
     if auth and nickname != "" and not nickname.isspace():
         while True:
             password = input("[cRACk] choose a password (leave empty for manual entry): ")
@@ -212,7 +214,7 @@ def oobe():
             print("[cRACk] great! update checking is \033[1;33mdisabled\033[0m.")
             check_for_updates = True
             break
-        print("[cRACk] wrong syntax! use y or n")
+        print("[cRACk] choose y or n")
     while True:
         default_server = input("[cRACk] choose default server ip:port (leave empty for mr.sugoma's): ")
         if default_server == "":
@@ -232,20 +234,60 @@ def oobe():
         elif motd_enabled.lower() == "n":
             print(f"[cRACk] great! MOTD is \033[1;33mdisabled\033[0m now.")
             break
-        print("[cRACk] wrong syntax! use y or n")
+        print("[cRACk] choose y or n")
 
-    print("\n[cRACk] lets summarize everything. here is your config:")
+    print("\n[cRACk] lets summarize everything. here is your config:\n")
     print(f"nickname: \033[1;33m{"*manual entry*" if nickname=="" else nickname}\033[0m")
     print(f"auth: \033[1;33m{"enabled" if auth else "disabled"}\033[0m")
     print(f"password: \033[1;33m{"-" if not auth else "*manual entry*" if password=="" else password}\033[0m")
     print(f"check for updates: \033[1;33m{"enabled" if check_for_updates else "disabled"}\033[0m")
     print(f"default server: \033[1;33m{default_server}\033[0m")
-    print(f"MOTD: \033[1;33m{"enabled" if motd_enabled else "disabled"}\033[0m")
+    print(f"MOTD: \033[1;33m{"enabled" if motd_enabled else "disabled"}\033[0m\n")
 
-    print("\n[cRACk] is everything perfect? (y/n)")
-    # спросить все ли нравится если да то записать конфиг и стопнуть прогу sys._exit(1) все я спать бббб
-    with open('config.toml', 'w') as f:
-        toml.dump(c, f)
+    while True:
+        config_confirm = input("\n[cRACk] is everything perfect? (y/n): ")
+        if config_confirm.lower() == "y":
+            print("[cRACk] saving config...")
+            # save config logic
+
+            input("[cRACk] everything is set up! now cRACk needs to restart so that everything goes correctly. open cRACk after it closes! (press enter to continue)")
+            print("[cRACk] 5...")
+            time.sleep(1)
+            print("[cRACk] 4...")
+            time.sleep(1)
+            print("[cRACk] 3...")
+            time.sleep(1)
+            print("[cRACk] 2...")
+            time.sleep(1)
+            print("[cRACk] 1...")
+            time.sleep(1)
+            print("[cRACk] exiting...")
+            break
+        elif config_confirm.lower() == "n":
+            while True:
+                reconfig_confirm = input("\n[cRACk] do you want to set up everything again? (y/n): ")
+                if reconfig_confirm.lower() == "y":
+                    print("[cRACk] restarting oobe...")
+                    with open('config.toml', 'w') as f:
+                        toml.dump(c, f)
+                    input("[cRACk] everything is set up! now cRACk needs to restart so that everything goes correctly. open cRACk after it closes! (press enter to continue)")
+                    print("[cRACk] 5...")
+                    time.sleep(1)
+                    print("[cRACk] 4...")
+                    time.sleep(1)
+                    print("[cRACk] 3...")
+                    time.sleep(1)
+                    print("[cRACk] 2...")
+                    time.sleep(1)
+                    print("[cRACk] 1...")
+                    time.sleep(1)
+                    print("[cRACk] exiting...")
+                    sys._exit(1)
+                    break
+                elif reconfig_confirm.lower() == "n":
+                    break
+        print("[cRACk] choose y or n")
+
 
 def main():
     global IP,PORT,NICKNAME
@@ -314,14 +356,12 @@ def main():
     while True:
         time.sleep(1)
 
-# if "--reset" in sys.argv or "-r" in sys.argv:
-#     c["configured"] = False
-#     with open('config.toml', 'w') as f:
-#         toml.dump(c, f)
+if "--reset" in sys.argv or "-r" in sys.argv:
+    c["configured"] = False
+    with open('config.toml', 'w') as f:
+        toml.dump(c, f)
 
 # if c["configured"]:
-main()
+    main()
 # else:
 #     oobe()
-
-# code for v2.0ь
