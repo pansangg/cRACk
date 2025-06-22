@@ -1,7 +1,7 @@
-# cRACk 2.0ь
+# cRACk 2.1337
 **c**lient for **RAC** **k**ettles
 
-cRACk is TUI client for [RAC](https://github.com/The-Stratosphere-Solutions/RAC-Hub) v1.99.2, written on Python.
+cRACk is TUI client for [RAC](https://meexreay.github.io/RAC-Hub) v2, written on Python.
 
 ## features
 - easy configurable
@@ -45,20 +45,20 @@ python -m PyInstaller --onefile main.py
 ```
 5) done. check /dist folder
 
-## screenshots
+<!-- ## screenshots
 Choosing nickname and host\
 ![ASCII art, choosing a nickname and host](img/hello.png)\
 Chatting with others\
-![Chatting with other people, user-agents](img/chat.png)
+![Chatting with other people, user-agents](img/chat.png) -->
 
 ## TODO
-- [x] fix ctrl+c exit
+- [x] fix ctrl+c exitв
 - [x] add user-agents support
 - [x] add first-time config
 - [x] add saving config
 - [x] add MOTDs
-- [x] add support for [RAC v2](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/RACv2.md) (auth)
-- [ ] add support for [WRAC v2](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/WRAC.md)
+- [x] add support for [RAC v2](https://meexreay.github.io/RAC-Hub/RACv2.html) (auth)
+- [ ] add support for [WRAC](https://meexreay.github.io/RAC-Hub/WRAC.html)
 - [x] fix "data_size lower than last_size" crash
 - [x] add ANSI filter
 - [x] add some colors you know
@@ -66,17 +66,18 @@ Chatting with others\
 - [x] ~~how to leave the server??~~ restart client
 - [x] add screenshots
 - [x] hide your ip
-- [ ] add faking user-agents
+- [x] ~~add faking user-agents~~ too lazy
 - [ ] add commands
 
 ## license
 this project is licensed under GPL-3.0 license.
 
 ## see also
-- [RAC-Hub](https://github.com/The-Stratosphere-Solutions/RAC-Hub)
-- [about RAC (v1.99)](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/RACv1.99.md)
-- [about RAC (v2)](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/RACv2.md)
-- [about WRAC (v2)](https://github.com/The-Stratosphere-Solutions/RAC-Hub/blob/main/WRAC.md)
+- [RAC-Hub](https://meexreay.github.io/RAC-Hub)
+- [Fake RAC-Hub](https://the-stratosphere-solutions.github.io/RAC-Hub)
+- [about RAC (v1.99)](https://meexreay.github.io/RAC-Hub/RACv1.99.html)
+- [about RAC (v2)](https://meexreay.github.io/RAC-Hub/RACv2.html)
+- [about WRAC (v2)](https://meexreay.github.io/RAC-Hub/WRAC.html)
 - [bRAC - better RAC client](https://github.com/MeexReay/bRAC)
 - [Mefedroniy - TUI RAC client](https://github.com/OctoBanon-Main/mefedroniy-client)
 - [RAC user-agents](https://github.com/MeexReay/bRAC/blob/main/docs/user_agents.md)

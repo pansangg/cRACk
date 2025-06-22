@@ -1,7 +1,7 @@
 import socket,threading,os,random,re,requests,time,toml,sys,string
 
-if not os.path.isfile("config.toml"):
-    with open("config.toml", "w") as f:
+if not os.path.isfile("crackconfig.toml"):
+    with open("crackconfig.toml", "w") as f:
         f.write("""configured = false
 nickname = ""
 auth = false
@@ -11,10 +11,10 @@ cfu = true
 motd = true
 """)
 
-with open("config.toml", 'r') as f:
+with open("crackconfig.toml", 'r') as f:
     c = toml.load(f)
 
-VERSION = "2.0ь"
+VERSION = "2.1337"
 MOTDS = [
     "also try bRAC",
     "also try Mefedroniy",
@@ -54,11 +54,9 @@ MOTDS = [
     "stealing passwords...",
     "shitcoded with love",
     "free robux: pansangg.github.io",
-    "thanks camp3rcraft",
     "shRACk soon (i hope)",
     "also try cRACk-unbloated",
-    "star the cRACk repository!",
-    "made by human!"
+    "star the cRACk repository!"
 ]
 ASCIIART = '''
 \033[1;33m        `7MM"""Mq.        db       .g8"""bgd `7MM
@@ -68,6 +66,8 @@ ASCIIART = '''
  8M       MM  YM.      AbmmmqMA  MM.           MM;Mm
  YM.    , MM   `Mb.   A'     VML `Mb.     ,'   MM `Mb.
   YMbmd'.JMML. .JMM..AMA.   .AMMA. `"bmmmd'  .JMML. YA\033[1;37m'''
+CMDS = {"help":"list of all commands",
+        "reset":"resets your client config"}
 
 last_size = 0
 
@@ -76,12 +76,28 @@ PASSWORD = ""
 IP = ""
 PORT = 0
 
+def auth():
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        sock.connect((IP, PORT))
+    except:
+        print("[cRACk] can't connect to the host!")
+        os._exit(-1)
+
+    sock.send(b'\x03'+f"{NICKNAME}\n{PASSWORD}".encode('utf-8'))
+    sock.close()
+
+def sc():
+    with open("crackconfig.toml", 'w') as f:
+        toml.dump(c, f)
+
 def rnp(): # stands for Random Nick Part
     chars = string.digits + string.ascii_letters
     return ''.join(random.choice(chars) for _ in range(5))
 
-def filter_ansi(text):
-    return re.sub(r'\x1b\[[0-9;?]*[A-DF-HJ-Z]', '', text)
+def sanitaze(text):
+    text = re.sub(r"[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]", '', text)
+    return re.sub(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", '', text)
 
 def valid_host(s):
     import re
@@ -109,22 +125,41 @@ def useragentize(text):
     text = re.sub("\uB9AC\u3E70<(.*?)> (.*)", r"\033[32m<\1> \2\033[0m", text) # bRAC
     text = re.sub("\u2550\u2550\u2550<(.*?)> (.*)", r"\033[91m<\1> \2\033[0m", text) # CRAB
     text = re.sub("\u00B0\u0298<(.*?)> (.*)", r"\033[95m<\1> \2\033[0m", text) # Mefidroniy
+    text = re.sub("\u0D9E<(.*?)> (.*)", r"\033[11m<\1> \2\033[0m", text) # Snowdrop
     text = re.sub("\u2042<(.*?)> (.*)", r"\033[1;33m<\1> \2\033[0m", text) # cRACk
     return text
 
 def sendmsg(text):
     global IP,PORT,last_size
-    sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-    sock.connect((IP, PORT))
-    if (c["auth"]):
-        sock.send(b'\x01'+f"{NICKNAME}\n{PASSWORD}\n{text}".encode('utf-8'))
-        sockres = sock.recv(1024)
-        if (sockres == b'\x01'):
-            print("[cRACk] something went wrong. please restart the client.")
-        elif (sockres == b'\x02'):
-            print("[cRACk] looks like your password from config is incorrect. to make everything work properly, please start cRACk with --reset or -r argument, and change your auth credentials.")
-    else: sock.send(b'\x01'+text.encode("utf-8"))
-    sock.close()
+    if (text.startswith('$')):
+        text = text[1:]
+        if text not in CMDS.keys():
+            print("[cRACk] unknown command!")
+        else:
+            match text:
+                case "help":
+                    print("[cRACk] all commands:")
+                    for cmd in CMDS:
+                        print(f"[cRACK] ${cmd} - {CMDS[cmd]}")
+                case "reset":
+                    c["configured"] = False
+                    print()
+                    sc()
+    else:
+        text = f"\r⁂<{NICKNAME}> {text}"+" "*50
+        sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        sock.connect((IP, PORT))
+        if (c["auth"]):
+            sock.send(b'\x02'+f"{NICKNAME}\n{PASSWORD}\n{text}".encode('utf-8'))
+            sockres = sock.recv(1024)
+            if (sockres == b'\x01'):
+                auth()
+                sock.send(b'\x02'+f"{NICKNAME}\n{PASSWORD}\n{text}".encode('utf-8'))
+            elif (sockres == b'\x02'):
+                c["configured"] = False
+                sc()
+        else: sock.send(b'\x01'+text.encode("utf-8"))
+        sock.close()
 
 def chunked_reading():
     global last_size
@@ -150,7 +185,7 @@ def chunked_reading():
                 new_data += part
 
             new_data = new_data.decode("utf-8", errors="replace")
-            print(filter_ansi(useragentize(new_data)))
+            print(useragentize(sanitaze(new_data)))
         elif data_size < last_size:
             sock.send(b'\x00')
 
@@ -173,7 +208,7 @@ def listen_client():
     while True:
         try:
             newmsg = input("")
-            if (newmsg != ""): sendmsg(f"\r⁂<{NICKNAME}> {newmsg}"+" "*50)
+            if (newmsg != ""): sendmsg(newmsg)
         except Exception as e:
             print(f"[cRACk] exception said to exit, bye!")
             os._exit(-1)
@@ -184,7 +219,7 @@ def oobe():
     print(f'''
  {ASCIIART}
  ------------------------------------------------------
-              version \033[1;33m{VERSION}\033[0m | by \033[1;33mpansangg\033[0m
+             version \033[1;33m{VERSION}\033[0m | by \033[1;33mpansangg\033[0m
           https://github.com/pansangg/cRACk
 
 ''')
@@ -271,11 +306,9 @@ def oobe():
             c["cfu"] = check_for_updates
             c["motd"] = motd_enabled
             c["configured"] = True
-            with open("config.toml", 'w') as f:
-                toml.dump(c, f)
+            sc()
 
             input("\n[cRACk] everything is set up! now cRACk needs to restart so that everything goes correctly. open cRACk after it closes! (press enter to continue)")
-            time.sleep(1)
             print("[cRACk] exiting...")
             time.sleep(1)
             os._exit(1)
@@ -302,7 +335,7 @@ def main():
  ------------------------------------------------------
                 \033[1;33mc\033[0mlient for \033[1;33mRAC\033[0m \033[1;33mk\033[0mettles
 {f"\x1b[3m{center(random_motd())}\x1b[0m\n" if c["motd"] else ""}
-              version \033[1;33m{VERSION}\033[0m | by \033[1;33mpansangg\033[0m
+             version \033[1;33m{VERSION}\033[0m | by \033[1;33mpansangg\033[0m
           https://github.com/pansangg/cRACk
 ''')
     if c["cfu"]: check_update()
@@ -342,27 +375,6 @@ def main():
         IP,PORT = IPPORTNOTSPLITTED.split(":", 1)
         PORT = int(PORT)
 
-    if (c["auth"]):
-        print("[cRACk] authenticating...")
-        authsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        try:
-            authsock.connect((IP, PORT))
-        except:
-            print("[cRACk] can't connect to the host!")
-            os._exit(-1)
-
-        authsock.send(b'\x03'+f"{NICKNAME}\n{PASSWORD}".encode('utf-8'))
-        authres = authsock.recv(1024)
-        if authres == b'\x01':
-            print("[cRACk] auth success! (logged in)")
-        elif authres == b'':
-            print("[cRACk] auth success! (registered)")
-        else:
-            print("[cRACk] something went wrong.")
-            os._exit(-1)
-        authsock.close()
-        time.sleep(1)
-
     print("[cRACk] connecting...")
     try:
         sock.connect((IP, PORT))
@@ -387,7 +399,7 @@ def main():
 
     print("[cRACk] we'll meet again.")
     dfull = full.decode("utf-8", errors="ignore")
-    print(filter_ansi(useragentize(dfull)))
+    print(useragentize(sanitaze(dfull)))
 
     threading.Thread(target=listen_client).start()
     threading.Thread(target=chunked_reading).start()
@@ -397,8 +409,7 @@ def main():
 
 if "--reset" in sys.argv or "-r" in sys.argv:
     c["configured"] = False
-    with open("config.toml", 'w') as f:
-        toml.dump(c, f)
+    sc()
 
 if c["configured"]:
     main()

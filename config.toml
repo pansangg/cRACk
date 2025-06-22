@@ -1,7 +1,0 @@
-configured = false
-nickname = ""
-auth = false
-password = ""
-default_server = "91.192.22.20:42666"
-cfu = true
-motd = true
