@@ -1,7 +1,7 @@
-configured = true
-nickname = "dfsgdsfgfdsg"
-auth = true
-password = "22222222222222222"
+configured = false
+nickname = ""
+auth = false
+password = ""
 default_server = "91.192.22.20:42666"
 cfu = true
 motd = true
