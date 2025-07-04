@@ -1,4 +1,7 @@
-# cRACk 2.1337 [abandoned]
+# cRACk 2.1337
+**_active development and support is temporarily closed_**
+
+
 **c**lient for **RAC** **k**ettles
 
 cRACk is TUI client for [RAC](https://meexreay.github.io/RAC-Hub) v2, written on Python.
@@ -74,10 +77,7 @@ this project is licensed under GPL-3.0 license.
 
 ## see also
 - [RAC-Hub](https://meexreay.github.io/RAC-Hub)
-- [Fake RAC-Hub](https://the-stratosphere-solutions.github.io/RAC-Hub)
-- [about RAC (v1.99)](https://meexreay.github.io/RAC-Hub/RACv1.99.html)
-- [about RAC (v2)](https://meexreay.github.io/RAC-Hub/RACv2.html)
-- [about WRAC (v2)](https://meexreay.github.io/RAC-Hub/WRAC.html)
+- [about RAC protocol](https://racinfo.kostyazero.com/protocol/rac)
 - [bRAC - better RAC client](https://github.com/MeexReay/bRAC)
 - [Mefedroniy - TUI RAC client](https://github.com/OctoBanon-Main/mefedroniy-client)
-- [RAC user-agents](https://github.com/MeexReay/bRAC/blob/main/docs/user_agents.md)
+- [RAC user-agents](https://racinfo.kostyazero.com/protocol/user-agents)
