@@ -1,4 +1,4 @@
-# cRACk 2.1337
+# cRACk 2.1337 [abandoned]
 **c**lient for **RAC** **k**ettles
 
 cRACk is TUI client for [RAC](https://meexreay.github.io/RAC-Hub) v2, written on Python.
