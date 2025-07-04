@@ -1,5 +1,5 @@
 # cRACk 2.1337
-**_active development and support is temporarily closed_**
+**_active development and updates are temporarily suspended_**
 
 
 **c**lient for **RAC** **k**ettles
